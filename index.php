@@ -119,23 +119,38 @@ function output_upcoming_events($events) {
           $fileUrl = $event->attachments[0]->fileUrl;
           $url_components = parse_url($fileUrl);
           parse_str($url_components['query'], $params);
-          $fileId = $params['id'];
+          $imageUrl = 'https://drive.google.com/uc?export=view&id='.$params['id'];
+      } else {
+          $imageUrl = 'http://dev.centralmidtown.org/wp-content/uploads/2022/09/cropped-central-midtown-icon_2-min.png';
       }
       // format html output ?>
+          <style>
+              .calendar_image img{
+                  max-width: 100px;
+              }
+              @media (min-width: 576px){
+                  .calendar_image{
+                      max-width: 150px;
+                  }
+                  .calendar_image img{
+                      max-width: 140px;
+                  }
+              }
+          </style>
       <div class="row align-items-center border-bottom border-primary py-3">
-          <div class="col mb-3" style="max-width: 150px;">
-              <?php if(isset($fileId)){ ?>
-              <img src="https://drive.google.com/uc?export=view&id=<?php echo($fileId);?>
+          <div class="col-12 col-sm mb-3 text-center calendar_image" >
+              <?php if(isset($imageUrl)){ ?>
+              <img src="<?php echo($imageUrl);?>
               " class="img-fluid" />
           <?php } ?>
           </div>
-          <div class="col text-center" style="max-width: 80px;">
-              <span class="fs-1"><?php echo($day_name); ?></span>
-              <h6><?php echo($month_name); ?> <?php echo($day_num); ?></h6>
+          <div class="col-12 col-sm text-center calendar_image" style="max-width: 90px;">
+              <span class="d-none d-sm-block fs-1"><?php echo($day_name); ?></span>
+              <span class="d-inline d-sm-none"><?php echo($day_name); ?></span>
+              <span class="d-inline"><?php echo($month_name); ?> <?php echo($day_num); ?></span>
           </div>
-          <div class="col">
-
-              <h4 class="mb-0"><?php echo($event->summary); ?></h4>
+          <div class="col mx-2">
+              <p class="mb-0" style="font-size: 1.4rem; @media (min-width: 576px){font-size: 1.1rem;}"><strong><?php echo($event->summary); ?></strong></p>
               <p><strong>Location:</strong> <?php echo($event->location); ?><br />
               <strong>Time:</strong> <?php echo($start_time); ?> - <?php echo($end_time); ?></p>
 
